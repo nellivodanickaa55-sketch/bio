@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WebSpace — Глеб. Сайты, которые работают на вас</title>
+<meta name="description" content="Проектирую и пишу сайты с нуля: дизайн, код, запуск. Без шаблонов и конструкторов.">
+<meta name="theme-color" content="#6B2737">
+<meta property="og:title" content="WebSpace — Глеб">
+<meta property="og:description" content="Не «просто сайт». Причина выбрать вас до того, как вы начнёте говорить.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='74' font-family='Georgia,serif' font-size='68' font-weight='700' fill='%236B2737' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a href="#main" class="skip-link">Перейти к содержанию</a>
+
+<div class="mesh" aria-hidden="true">
+  <span class="mesh__spot mesh__spot--1"></span>
+  <span class="mesh__spot mesh__spot--2"></span>
+  <span class="mesh__spot mesh__spot--3"></span>
+</div>
+<!-- ТИПОГРАФИЧЕСКИЙ ФОН -->
+<div class="typo-bg" aria-hidden="true">
+  <span class="typo-bg__w typo-bg__w--1">W</span>
+  <span class="typo-bg__w typo-bg__w--2">W</span>
+  <span class="typo-bg__w typo-bg__w--3">W</span>
+  <span class="typo-bg__w typo-bg__w--4">W</span>
+  <span class="typo-bg__w typo-bg__w--5">W</span>
+</div>
+<!-- БОКАЛЫ С ВИНОМ -->
+
+
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<div class="preloader" id="preloader">
+  <div class="preloader__logo">Web<span>Space</span></div>
+  <div class="preloader__track"><div class="preloader__fill" id="preloadFill"></div></div>
+</div>
+
+<div class="side side--left" aria-hidden="true">
+  <span>SCROLL</span>
+  <span class="side__dot"></span>
+  <span class="side__current" id="sideLabel">НАЧАЛО</span>
+</div>
+<div class="side side--right" aria-hidden="true">
+  <span>WEBSPACE</span>
+  <span class="side__dot"></span>
+  <span>2025</span>
+</div>
+
+<main id="main">
+
+  <div class="container">
+    <header class="masthead">
+      <div class="masthead__name">Web<span>Space</span></div>
+      <div class="masthead__meta">Идея · Код · Продажи </div>
+    </header>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="bg-type bg-type--hero" aria-hidden="true" data-depth="0.2">W</div>
+
+    <div class="container">
+      <div class="hero__inner">
+        <h1 class="hero__headline" data-reveal>
+          Сайт — это <span class="accent">разговор</span>.<br>
+          Я умею его вести.
+        </h1>
+  
+
+        <div class="hero__sub">
+          <span class="hero__sub-name">Глеб · WebSpace</span>
+          <p class="hero__phrase-line1">Не «просто сайт».</p>
+          <p class="hero__phrase-line2">Причина выбрать вас до того, как вы начнёте говорить.</p>
+        </div>
+      </div>
+
+     <div class="container">
+  <div class="divider" aria-hidden="true">
+    <span class="divider__line"></span>
+    <span class="divider__gem"></span>
+    <span class="divider__line"></span>
+  </div>
+</div>
+
+      <div class="trustbar">
+        <div class="trustbar__item">
+          <span class="trustbar__value" data-count="100" data-suffix="%">0%</span>
+          <span class="trustbar__label">код с нуля, без шаблонов и конструкторов</span>
+        </div>
+        <div class="trustbar__item">
+          <span class="trustbar__value">24/7</span>
+          <span class="trustbar__label">сайт работает без вас</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="container">
+  <div class="divider" aria-hidden="true">
+    <span class="divider__line"></span>
+    <span class="divider__gem"></span>
+    <span class="divider__line"></span>
+  </div>
+</div>
+
+
+  <!-- МАНИФЕСТ -->
+  <section class="section" id="manifesto">
+    <div class="bg-type bg-type--manifesto" aria-hidden="true" data-depth="0.15">06</div>
+
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Инвестиция, не расход, а инструмент для достижения цели </span>
+        <h2 class="section-title" data-reveal>
+          <span class="section-index">01</span>
+          Зачем нужен <span class="accent">сайт</span>
+        </h2>
+      </div>
+
+      <div class="grid">
+        <article class="card"><span class="card__num">01</span><h3 class="card__title">Работает 24/7</h3><p class="card__text">Пока вы спите, сайт отвечает на вопросы клиентов, показывает портфолио и принимает заявки. Это сотрудник, который никогда не устаёт и не уходит в отпуск.</p></article>
+        <article class="card"><span class="card__num">02</span><h3 class="card__title">Первое впечатление</h3><p class="card__text">90% клиентов гуглят вас перед встречей. Если сайта нет или он выглядит дёшево — доверие падает ещё до разговора.</p></article>
+        <article class="card"><span class="card__num">03</span><h3 class="card__title">Контроль нарратива</h3><p class="card__text">Соцсети — это чужая территория с чужими правилами. Сайт — это ваша земля. Вы решаете, что показать и в какой последовательности.</p></article>
+        <article class="card"><span class="card__num">04</span><h3 class="card__title">Измеримая конверсия</h3><p class="card__text">Каждый клик, каждая заявка, каждая минута на странице — это данные. Вы видите, что работает, а что нет.</p></article>
+        <article class="card"><span class="card__num">05</span><h3 class="card__title">Масштабируемость</h3><p class="card__text">Начали с визитки — добавили блог, потом магазин, потом личный кабинет. Сайт растёт вместе с вами.</p></article>
+        <article class="card"><span class="card__num">06</span><h3 class="card__title">Ваш актив</h3><p class="card__text">Аккаунт могут забанить за час. Сайт — ваша собственность. Домен, код, аудитория. Это актив, который можно продать.</p></article>
+      </div>
+      <blockquote class="quote">
+  <span class="quote__mark">«</span>
+  <span class="quote__text">Хороший интерфейс не заставляет думать. Великий — заставляет вернуться.</span>
+</blockquote>
+
+
+   
+
+  <div class="container">
+    <div class="divider" aria-hidden="true">
+      <span class="divider__line"></span>
+      <span class="divider__gem"></span>
+      <span class="divider__line"></span>
+    </div>
+  </div>
+<div class="float-decor float-decor--1" aria-hidden="true">
+  <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="20" r="16" fill="none" stroke="#6B2737" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="20" cy="20" r="10" fill="none" stroke="#9C4250" stroke-width="0.6" opacity="0.4"/>
+    <circle cx="20" cy="20" r="3" fill="#6B2737" opacity="0.35"/>
+  </svg>
+</div>
+  <!-- SHOWCASE -->
+  <section class="section" id="showcase">
+    <div class="bg-type bg-type--showcase" aria-hidden="true" data-depth="0.1">W</div>
+
+    <div class="container">
+      <p class="bridge">
+        <span class="bridge__gem" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l8 8-8 8-8-8z"/></svg>
+        </span>
+        Это не теория. Вот как это выглядит на практике.
+      </p>
+
+      <h2 class="section-title" data-reveal>
+        <span class="section-index">02</span>
+        Сайт модели и контент-креатора —<br>
+        <span class="accent">от идеи до кода</span>
+      </h2>
+
+      <div class="mockup" data-mockup>
+        <div class="mockup__frame" id="mockupFrame">
+          <div class="mockup__inner">
+            <div class="mockup__bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="shot" id="shot">
+              <img class="shot__img" src="nelly-screenshot.jpg" alt="Главная страница сайта модели Нелли: крупный заголовок, портфолио и форма брифа" width="1600" height="1000" loading="lazy" decoding="async" id="shotImg">
+              <div class="shot__fallback" aria-hidden="true"><span>W</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase-body">
+        <div><h4>Задача</h4><p>Создать сайт для блогера и модели с портфолио, статистикой и формой для брендов. Человек приходит за «красивой визиткой», а получает инструмент продаж: открытая аналитика, бриф-форма, нативная подача.</p></div>
+        <div><h4>Решение</h4><p>Современный дизайн с 3D-эффектами и анимациями. Адаптив, быстрая загрузка, SEO. Код написан с нуля — без конструкторов, без шаблонов. Сайт выглядит как продукт агентства, а работает как лендинг для коллабораций.</p></div>
+      </div>
+
+      <div class="result">
+        <span class="result__label">Результат</span>
+        <p class="result__text">Сайт стал <b>лицом бренда</b>. Бренды заполняют бриф прямо на сайте, конверсия выросла в 2.5x.</p>
+      </div>
+
+      <a class="link-arrow" href="https://nelly-vod.ru" target="_blank" rel="noopener">
+        Открыть сайт
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="divider" aria-hidden="true">
+      <span class="divider__line"></span>
+      <span class="divider__gem"></span>
+      <span class="divider__line"></span>
+    </div>
+  </div>
+
+  <!-- ОТЗЫВ -->
+  <section class="testimonial">
+  <span class="testimonial__mark" aria-hidden="true">«</span>
+  <blockquote class="testimonial__text">
+    Я пришла за красивой визиткой, а получила инструмент, который продаёт за меня. Бренды пишут сами — бриф заполняют прямо на сайте.
+  </blockquote>
+  <div class="testimonial__author">
+    <span class="testimonial__name">Нелли</span>
+    <span class="testimonial__role">Модель, контент-креатор</span>
+  </div>
+</section>
+
+  <div class="container">
+    <div class="divider" aria-hidden="true">
+      <span class="divider__line"></span>
+      <span class="divider__gem"></span>
+      <span class="divider__line"></span>
+    </div>
+  </div>
+<div class="float-decor float-decor--2" aria-hidden="true">
+  <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 30 L50 30 M30 10 L30 50" stroke="#6B2737" stroke-width="0.6" opacity="0.25"/>
+    <circle cx="30" cy="30" r="6" fill="none" stroke="#9C4250" stroke-width="0.8" opacity="0.35"/>
+  </svg>
+</div>
+  <!-- ПОЧЕМУ Я -->
+  <section class="section" id="why">
+    <div class="bg-type bg-type--why" aria-hidden="true" data-depth="0.12">W</div>
+
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Без воды</span>
+        <h2 class="section-title" data-reveal>
+          <span class="section-index">03</span>
+          Почему выбирают <span class="accent">меня</span>
+        </h2>
+      </div>
+
+      <div class="why-grid">
+        <article class="why-card"><div class="why-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><h3 class="why-card__title">Код с нуля, не шаблон</h3><p class="why-card__text">Каждая строка пишется под вас. Нет тормозов, нет плагинов. Быстро, чисто, масштабируемо.</p></article>
+        <article class="why-card"><div class="why-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h3 class="why-card__title">Дизайн, который конвертирует</h3><p class="why-card__text">Красиво — это хорошо. Красиво и с конверсией — это я. Каждый блок ведёт к действию.</p></article>
+        <article class="why-card"><div class="why-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div><h3 class="why-card__title">Передаю вам всё</h3><p class="why-card__text">Код, доступы, инструкции. Вы владеете сайтом полностью. Хотите доработать — без проблем.</p></article>
+        <article class="why-card"><div class="why-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><h3 class="why-card__title">Один человек, одна связка</h3><p class="why-card__text">Не агентство с 5 исполнителями. Вы работаете со мной — от идеи до деплоя.</p></article>
+        <article class="why-card"><div class="why-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div><h3 class="why-card__title">Адаптив по умолчанию</h3><p class="why-card__text">60–80% трафика идёт с мобильных. Сайт проектируется сразу под все экраны.</p></article>
+        <article class="why-card"><div class="why-card__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><h3 class="why-card__title">Быстрая загрузка</h3><p class="why-card__text">Google учитывает скорость в ранжировании. Оптимизирую код, картинки, шрифты.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="divider" aria-hidden="true">
+      <span class="divider__line"></span>
+      <span class="divider__gem"></span>
+      <span class="divider__line"></span>
+    </div>
+  </div>
+<div class="float-decor float-decor--3" aria-hidden="true">
+  <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="15" y="15" width="20" height="20" fill="none" stroke="#6B2737" stroke-width="0.7" opacity="0.3" transform="rotate(45 25 25)"/>
+    <circle cx="25" cy="25" r="4" fill="#9C4250" opacity="0.3"/>
+  </svg>
+</div>
+  <!-- ПРОЦЕСС -->
+  <section class="section" id="process">
+    <div class="bg-type bg-type--process" aria-hidden="true" data-depth="0.09">04</div>
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Как это устроено</span>
+        <h2 class="section-title" data-reveal>
+          <span class="section-index">04</span>
+          От первого сообщения <span class="accent">до запуска</span>
+        </h2>
+      </div>
+
+      <div class="process-grid">
+        <div class="step"><span class="step__dot"></span><span class="step__num">01</span><h3 class="step__title">Бриф</h3><p class="step__text">30 минут разговора. Задача, аудитория, сроки, бюджет. Без анкет на 40 вопросов.</p></div>
+        <div class="step"><span class="step__dot"></span><span class="step__num">02</span><h3 class="step__title">Концепт и смета</h3><p class="step__text">Показываю направление, структуру и точную цену. Работа начинается после вашего «да».</p></div>
+        <div class="step"><span class="step__dot"></span><span class="step__num">03</span><h3 class="step__title">Дизайн и код</h3><p class="step__text">Один человек — одна связка. Правки включены в процесс, а не оплачиваются отдельно.</p></div>
+        <div class="step"><span class="step__dot"></span><span class="step__num">04</span><h3 class="step__title">Запуск и передача</h3><p class="step__text">Домен, хостинг, доступы, инструкция — всё ваше. Дальше можете вести сами.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="divider" aria-hidden="true">
+      <span class="divider__line"></span>
+      <span class="divider__gem"></span>
+      <span class="divider__line"></span>
+    </div>
+  </div>
+<div class="float-decor float-decor--4" aria-hidden="true">
+  <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg">
+    <line x1="22.5" y1="5" x2="22.5" y2="40" stroke="#6B2737" stroke-width="0.5" opacity="0.25"/>
+    <line x1="5" y1="22.5" x2="40" y2="22.5" stroke="#6B2737" stroke-width="0.5" opacity="0.25"/>
+    <circle cx="22.5" cy="22.5" r="8" fill="none" stroke="#9C4250" stroke-width="0.7" opacity="0.35"/>
+  </svg>
+</div>
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <span class="kicker">Последние вопросы</span>
+        <h2 class="section-title" data-reveal>
+          <span class="section-index">05</span>
+          Что обычно <span class="accent">спрашивают</span>
+        </h2>
+      </div>
+
+      <div class="faq">
+        <div class="faq__item"><button class="faq__q" type="button" aria-expanded="false"><span class="faq__num">01</span><span class="faq__label">Сколько стоит сайт?</span><span class="faq__icon"></span></button><div class="faq__a"><div><p>Цена зависит от задачи: лендинг и корпоративный сайт — разные объёмы. Точную сумму называю после брифа, до начала работы.</p></div></div></div>
+        <div class="faq__item"><button class="faq__q" type="button" aria-expanded="false"><span class="faq__num">02</span><span class="faq__label">Сколько времени это займёт?</span><span class="faq__icon"></span></button><div class="faq__a"><div><p>Лендинг — 1–2 недели. Сайт с портфолио — 2–3 недель. Сроки фиксирую до старта.</p></div></div></div>
+        <div class="faq__item"><button class="faq__q" type="button" aria-expanded="false"><span class="faq__num">03</span><span class="faq__label">А если мне не понравится?</span><span class="faq__icon"></span></button><div class="faq__a"><div><p>Концепт показываю до финала. Правки на каждом этапе включены. Мне важно, чтобы вы ушли с сайтом, который нравится.</p></div></div></div>
+        <div class="faq__item"><button class="faq__q" type="button" aria-expanded="false"><span class="faq__num">04</span><span class="faq__label">Что нужно от меня?</span><span class="faq__icon"></span></button><div class="faq__a"><div><p>Ответить на вопросы брифа и дать материалы. Всё остальное: структура, тексты, дизайн, код, деплой — моя работа.</p></div></div></div>
+        <div class="faq__item"><button class="faq__q" type="button" aria-expanded="false"><span class="faq__num">05</span><span class="faq__label">Кому принадлежит сайт после сдачи?</span><span class="faq__icon"></span></button><div class="faq__a"><div><p>Вам. Полностью: домен, хостинг, исходники, доступы, инструкция. Никаких  платежей.</p></div></div></div>
+      </div>
+    </div>
+  </section>
+  <!-- CTA / КОНТАКТЫ -->
+<section class="section" id="cta">
+  <div class="container">
+    <div class="cta-panel">
+      <span class="kicker">Связаться</span>
+      <h2 class="section-title">
+        Остальные работы —<br>
+        <span class="accent">в Telegram</span>
+      </h2>
+      <p>Портфолио, процессы, детали проектов. Или просто напишите — обсудим вашу задачу .</p>
+      <div class="cta-links">
+        <a href="https://t.me/xaliva_5" class="btn btn--primary" target="_blank" rel="noopener">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          Telegram
+        </a>
+        <a href="https://www.instagram.com/xaliva_5?exln=MXY1YWVmOHZleWZmMg%3D%3D&utm_source=qr" class="btn btn--ghost">Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+  
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div>
+          <span class="footer__sign">Глеб · WebSpace</span>
+          <p class="footer__tagline">Сайты, которые работают, пока вы спите.</p>
+        </div>
+        <nav class="footer__links" aria-label="Контакты">
+          <a class="footer__link" href="https://t.me/xaliva_5" target="_blank" rel="noopener">Telegram</a>
+          <a class="footer__link" href="https://instagram.com/USERNAME" target="_blank" rel="noopener">Instagram</a>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__tech">HTML · CSS · JavaScript · GSAP · Three.js · Figma</span>
+        <span class="footer__year">© 2025</span>
+      </div>
+    </div>
+  </footer>
+<!-- ПОЛНОЭКРАННЫЙ INTRO-ЭКРАН ДЛЯ ВИЗИТКИ -->
+<div class="card-screen" id="cardScreen" aria-hidden="true">
+  <!-- 3D Canvas для Three.js волн -->
+  <canvas class="card-screen__canvas" id="cardCanvas"></canvas>
+  <!-- АНИМИРОВАННЫЙ КИТ -->
+
+  <!-- Фоновая монограмма W -->
+  <div class="card-screen__watermark" aria-hidden="true">W</div>
+
+  <button class="card-screen__close" id="cardScreenClose" type="button" aria-label="Перейти к сайту">
+    <span>Пропустить</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <div class="card-screen__center">
+    <div class="card-screen__kicker" id="csKicker">WebSpace · Прямой контакт</div>
+
+    <h2 class="card-screen__quote" id="csQuote">
+      <span class="cs-line"><span>То, что привело</span></span>
+      <span class="cs-line"><span>вас сюда — сейчас</span></span>
+      <span class="cs-line"><span class="cs-accent">у вас в руках.</span></span>
+    </h2>
+
+    <p class="card-screen__sub" id="csSub">
+      Это не случайность. Это знак.<br>
+      Сайт должен захватывать внимание с первой секунды — точно так же, как эта визитка.
+    </p>
+
+    <div class="card-screen__action" id="csAction">
+      <a href="#cta" class="btn-card-epic" id="csCta">
+        <span>Обсудить проект</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+      <button class="card-screen__skip-btn" id="csSkip">Смотреть портфолио</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script src="gsap.min.js"></script>
+   <script src="ScrollTrigger.min.js"></script>
+<script src="lenis.min.js"></script>
+<!-- Удали старые строки с Three.js и добавь эти -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.159.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+  import * as THREE from 'three';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  window.THREE = THREE;
+  window.GLTFLoader = GLTFLoader;
+</script>
+</script>
+<script src="app.js"></script>
+</body>
+</html>
