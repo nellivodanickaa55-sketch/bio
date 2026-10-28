@@ -1214,3 +1214,81 @@ p{text-wrap:pretty}
   color: #F8F4EE;
 }
 /* ══ РЕАЛИСТИЧНЫЙ АНИМИРОВАННЫЙ КИТ ══ */
+/* ── PRELOADER ДЛЯ ВИЗИТКИ ── */
+#cardPreloader {
+  position: fixed;
+  inset: 0;
+  background: #6B2737;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 9999;
+}
+
+#cardPreloader__spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(248, 244, 238, 0.2);
+  border-top-color: #F8F4EE;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+#cardPreloader p {
+  color: #F8F4EE;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+#cardProgress {
+  width: 120px;
+  height: 2px;
+  background: rgba(248, 244, 238, 0.2);
+  border-radius: 1px;
+  overflow: hidden;
+  transform-origin: left;
+}
+
+#cardProgress::after {
+  content: '';
+  display: block;
+  height: 100%;
+  background: #F8F4EE;
+  width: 100%;
+  transform: scaleX(0);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── АДАПТИВ ДЛЯ ВИЗИТКИ ?card ── */
+@media (max-width: 768px) {
+  #cardScreen {
+    padding: 1.5rem;
+  }
+
+  .cs-line {
+    font-size: clamp(1.5rem, 8vw, 2.5rem);
+    line-height: 1.2;
+  }
+
+  #csSub {
+    font-size: 0.95rem;
+    margin-top: 1rem;
+  }
+
+  #csAction {
+    margin-top: 1.5rem;
+    gap: 1rem;
+  }
+
+  .card-screen__cta,
+  .card-screen__skip-btn {
+    font-size: 0.85rem;
+    padding: 10px 20px;
+    width: 100%;
+  }
+}
