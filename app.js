@@ -526,17 +526,22 @@ camera.lookAt(0, 0, 0);
         dismiss('#cta');
       });
 
-      /* 3. ЗАПУСК И GSAP АНИМАЦИЯ ПОЯВЛЕНИЯ */
+  /* 3. ЗАПУСК И GSAP АНИМАЦИЯ ПОЯВЛЕНИЯ */
       setTimeout(() => {
         screen.classList.add('is-active');
-        // Запускаем кита через 0.5 секунды после появления экрана
-        const whale = $('#whaleContainer');
-        if (whale) {
-          setTimeout(() => {
-            whale.classList.add('is-swimming');
-          }, 500);
-        }
         initThree();
+
+        // Текст появляется сразу
+        const lines = $$('.cs-line > span', screen);
+        gsap.set(lines, { yPercent: 120 });
+        gsap.set('#csKicker, #csSub, #csAction', { opacity: 0, y: 24 });
+
+        const tl = gsap.timeline({ delay: 0.2 });
+        tl.to('#csKicker', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' })
+          .to(lines, { yPercent: 0, duration: 0.95, ease: 'power4.out', stagger: 0.12 }, '-=0.3')
+          .to('#csSub', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+          .to('#csAction', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3');
+      }, 700);
       
 
         // Сброс и пошаговая анимация текста
