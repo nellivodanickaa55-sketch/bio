@@ -371,7 +371,7 @@
         requestAnimationFrame(animateThree);
         const elapsed = clock.getElapsedTime();
         if (whale && whale.visible) {
-          const speed = isMobileDevice ? 2.0 : 0.7;
+          const speed = isMobileDevice ? 2.5 : 0.7;
           whale.position.x += speed;
           whale.position.y = -190 + Math.sin(elapsed * 1.3) * 22;
           whale.rotation.z = Math.sin(elapsed * 0.9) * 0.08;
