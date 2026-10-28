@@ -424,7 +424,7 @@
           .to(lines, { yPercent: 0, duration: 0.95, ease: 'power4.out', stagger: 0.12 }, '-=0.3')
           .to('#csSub', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
           .to('#csAction', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3');
-      }, isMobileDevice ? 100 : 700);
+      }, isMobileDevice ? 30 : 700);
     }
   }
 
