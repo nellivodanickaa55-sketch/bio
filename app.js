@@ -469,8 +469,9 @@ function initFAQ(){
         const elapsed = clock.getElapsedTime();
 
         if (whale && whale.visible) {
-          // Плавное движение слева направо
-          whale.position.x += 0.7;
+// Плавное движение слева направо
+          const speed = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? 2.0 : 0.7;
+          whale.position.x += speed;
 
           // Волнообразное покачивание вверх-вниз
           whale.position.y = -190 + Math.sin(elapsed * 1.3) * 22;
@@ -541,7 +542,7 @@ camera.lookAt(0, 0, 0);
           .to(lines, { yPercent: 0, duration: 0.95, ease: 'power4.out', stagger: 0.12 }, '-=0.3')
           .to('#csSub', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
           .to('#csAction', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3');
-      }, 700);
+      }, 200);
       
 
         // Сброс и пошаговая анимация текста
