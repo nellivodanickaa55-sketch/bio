@@ -446,4 +446,4 @@
   } else {
     addEventListener('DOMContentLoaded', () => setTimeout(start, 1));
   }
-)();
+();
