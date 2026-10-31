@@ -425,7 +425,7 @@
         requestAnimationFrame(animateThree);
         const elapsed = clock.getElapsedTime();
         if (whale && whale.visible) {
-          const speed = isMobileDevice ? 2.3 : 0.7;
+       const speed = isMobileDevice ? 4.5 : 1.4;
           whale.position.x += speed;
           whale.position.y = -190 + Math.sin(elapsed * 1.3) * 22;
           whale.rotation.z = Math.sin(elapsed * 0.9) * 0.08;
@@ -433,12 +433,18 @@
           if (whale.position.x > 0 && whale.position.x < 80) {
             whale.position.x += 0.08;
           }
-          if (whale.position.x > 1200) {
-            whale.visible = false;
+     if (whale.position.x > 900) {
+  whale.visible = false;
+
+  setTimeout(() => {
+    whale.position.x = isMobileDevice ? -620 : -850;
+    whale.visible = true;
+  }, isMobileDevice ? 1800 : 5000);
+}
             setTimeout(() => {
-              whale.position.x = -1000;
-              whale.visible = true;
-            }, 5000);
+  whale.position.x = isMobileDevice ? -620 : -850;
+  whale.visible = true;
+}, isMobileDevice ? 1800 : 5000);
           }
         }
         camera.lookAt(0, 0, 0);
@@ -478,7 +484,7 @@
           .to(lines, { yPercent: 0, duration: 0.95, ease: 'power4.out', stagger: 0.12 }, '-=0.3')
           .to('#csSub', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
           .to('#csAction', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3');
-      }, isMobileDevice ? 30 : 500);
+      }, isMobileDevice ? 5 : 500);
     }
   }
 
