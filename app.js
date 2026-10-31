@@ -307,65 +307,119 @@
       const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       let renderer, scene, camera, whale, clock;
 
-      async function initThree(){
-        if (!window.THREE) return;
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
-        camera.position.set(0, 80, 400);
-        clock = new THREE.Clock();
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-        scene.add(ambientLight);
-        const spotLight = new THREE.SpotLight(0xff9eb0, 1.2);
-        spotLight.position.set(200, 300, 200);
-        spotLight.castShadow = !isMobileDevice;
-        scene.add(spotLight);
-        const fillLight = new THREE.DirectionalLight(0x9C4250, 0.6);
-        fillLight.position.set(-150, 100, -100);
-        scene.add(fillLight);
-        const loader = new window.GLTFLoader();
-        try {
-          const gltf = await new Promise((resolve, reject) => {
-            loader.load('whale/scene.gltf', resolve, undefined, reject);
-          });
-          whale = gltf.scene;
-          const box = new THREE.Box3().setFromObject(whale);
-          const size = box.getSize(new THREE.Vector3());
-          const maxDim = Math.max(size.x, size.y, size.z);
-          const targetSize = 1000;
-          const scaleFactor = targetSize / maxDim;
-          whale.scale.setScalar(scaleFactor);
-          const center = box.getCenter(new THREE.Vector3());
-          whale.position.sub(center.multiplyScalar(scaleFactor));
-          whale.position.set(-1000, -190, -150);
-          whale.rotation.y = Math.PI / 2;
-          whale.traverse(child => {
-            if (child.isMesh) {
-              child.material.color = new THREE.Color(0x8a4452);
-              child.material.emissive = new THREE.Color(0x3D1118);
-              child.material.emissiveIntensity = 0.4;
-              child.material.roughness = 0.6;
-              child.material.metalness = 0.05;
-              child.material.transparent = true;
-              child.material.opacity = 0.92;
-              child.material.needsUpdate = true;
-            }
-          });
-          scene.add(whale);
-        } catch (error) {
-          console.warn('Не удалось загрузить модель кита:', error);
-        }
-        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: !isMobileDevice });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobileDevice ? 1.5 : 2));
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = !isMobileDevice;
-        window.addEventListener('resize', () => {
-          camera.aspect = window.innerWidth / window.innerHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-        animateThree();
-      }
+     async function initThree(){
+  if (!window.THREE) return;
 
+  scene = new THREE.Scene();
+
+  camera = new THREE.PerspectiveCamera(
+    50,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    2000
+  );
+
+  camera.position.set(0, 80, 400);
+  clock = new THREE.Clock();
+
+  // Свет
+  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+
+  const spotLight = new THREE.SpotLight(0xff9eb0, 1.2);
+  spotLight.position.set(200, 300, 200);
+  spotLight.castShadow = !isMobileDevice;
+  scene.add(spotLight);
+
+  const fillLight = new THREE.DirectionalLight(0x9C4250, 0.6);
+  fillLight.position.set(-150, 100, -100);
+  scene.add(fillLight);
+
+  // Renderer создаём сразу, не ждём модель
+  renderer = new THREE.WebGLRenderer({
+    canvas,
+    alpha: true,
+    antialias: !isMobileDevice,
+    powerPreference: 'high-performance'
+  });
+
+  renderer.setPixelRatio(
+    Math.min(
+      window.devicePixelRatio || 1,
+      isMobileDevice ? 1.25 : 2
+    )
+  );
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = !isMobileDevice;
+
+  camera.lookAt(0, 0, 0);
+
+  // Начинаем рендерить сразу
+  animateThree();
+
+  // Загружаем кита параллельно
+  const loader = new window.GLTFLoader();
+
+  loader.load(
+    'whale/scene.gltf',
+
+    gltf => {
+      whale = gltf.scene;
+
+      const box = new THREE.Box3().setFromObject(whale);
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+
+      const targetSize = 1000;
+      const scaleFactor = targetSize / maxDim;
+
+      whale.scale.setScalar(scaleFactor);
+
+      const center = box.getCenter(new THREE.Vector3());
+      whale.position.sub(center.multiplyScalar(scaleFactor));
+
+      // Было -1000. На мобильном начнём ближе
+      whale.position.set(
+        isMobileDevice ? -620 : -850,
+        -190,
+        -150
+      );
+
+      whale.rotation.y = Math.PI / 2;
+
+      whale.traverse(child => {
+        if (!child.isMesh) return;
+
+        child.material.color = new THREE.Color(0x8a4452);
+        child.material.emissive = new THREE.Color(0x3D1118);
+        child.material.emissiveIntensity = 0.4;
+        child.material.roughness = 0.6;
+        child.material.metalness = 0.05;
+        child.material.transparent = true;
+        child.material.opacity = 0.92;
+        child.material.needsUpdate = true;
+
+        // На всякий случай отключаем тени у мобильной версии
+        child.castShadow = !isMobileDevice;
+        child.receiveShadow = !isMobileDevice;
+      });
+
+      scene.add(whale);
+    },
+
+    undefined,
+
+    error => {
+      console.warn('Не удалось загрузить модель кита:', error);
+    }
+  );
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
       function animateThree(){
         if (!screen.classList.contains('is-active')) return;
         requestAnimationFrame(animateThree);
