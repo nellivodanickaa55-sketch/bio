@@ -441,9 +441,15 @@
       }, isMobileDevice ? 10 : 500);
     }
 
+// ... здесь заканчивается функция initCardEpicScreen
+    
+    // ВАЖНО: убедись, что перед этим "if" закрыты все фигурные скобки функций выше!
+
+  } // Это закрывает функцию start()
+
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(start, 1);
   } else {
     addEventListener('DOMContentLoaded', () => setTimeout(start, 1));
   }
-();
+})();
