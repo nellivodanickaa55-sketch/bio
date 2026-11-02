@@ -1292,3 +1292,200 @@ p{text-wrap:pretty}
     width: 100%;
   }
 }
+/* ══ WEBSPACE BRIEF MODAL ══ */
+.brief-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 3vw, 32px);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity .4s var(--ease), visibility .4s;
+}
+
+.brief-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.brief-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 21, 18, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.brief-window {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 620px;
+  background: var(--paper-lift);
+  border-radius: var(--radius);
+  border: 1px solid var(--line-soft);
+  padding: clamp(24px, 4vw, 44px);
+  box-shadow: 0 24px 60px -15px rgba(61, 21, 32, 0.4);
+  transform: translateY(20px) scale(0.97);
+  transition: transform .4s var(--ease);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.brief-modal.is-open .brief-window {
+  transform: translateY(0) scale(1);
+}
+
+.brief-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 18px;
+  color: var(--muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line-soft);
+  display: grid;
+  place-items: center;
+  transition: all .2s;
+}
+.brief-close:hover {
+  color: var(--wine);
+  border-color: var(--wine);
+}
+
+.brief-progress {
+  height: 3px;
+  background: var(--line-soft);
+  border-radius: 4px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.brief-progress__bar {
+  height: 100%;
+  width: 25%;
+  background: var(--wine);
+  transition: width .35s var(--ease);
+}
+
+.brief-title {
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.brief-desc {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.brief-step { display: none; }
+.brief-step.is-active { display: block; animation: briefFade .35s var(--ease); }
+
+@keyframes briefFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.brief-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.brief-option {
+  cursor: pointer;
+  display: block;
+}
+.brief-option input { display: none; }
+
+.brief-option__card {
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1.5px solid var(--line-soft);
+  transition: all .25s var(--ease);
+  display: flex;
+  flex-direction: column;
+}
+
+.brief-option input:checked + .brief-option__card {
+  border-color: var(--wine);
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(107, 39, 55, 0.1);
+  transform: translateY(-2px);
+}
+
+.brief-option__title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.brief-option input:checked + .brief-option__card .brief-option__title {
+  color: var(--wine);
+}
+.brief-option__sub {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.brief-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: var(--wine-soft);
+  border: 1px solid rgba(107, 39, 55, 0.15);
+  margin-bottom: 24px;
+}
+.brief-summary__label {
+  display: block;
+  font-size: var(--fs-micro);
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  color: var(--muted);
+}
+.brief-summary__val {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: var(--wine);
+}
+
+.brief-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.brief-input {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1.5px solid var(--line-soft);
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .2s;
+}
+.brief-input:focus {
+  border-color: var(--wine);
+}
+
+.brief-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
