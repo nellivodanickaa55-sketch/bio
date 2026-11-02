@@ -81,12 +81,19 @@
         </h1>
   
 
-        <div class="hero__sub">
+      <div class="hero__sub">
           <span class="hero__sub-name">Глеб · WebSpace</span>
           <p class="hero__phrase-line1">Не «просто сайт».</p>
           <p class="hero__phrase-line2">Причина выбрать вас до того, как вы начнёте говорить.</p>
+          
+          <!-- НОВАЯ КНОПКА ЗАПУСКА БРИФА -->
+          <div style="margin-top: 28px;">
+            <button type="button" class="btn btn--primary" id="openBriefBtn">
+              Рассчитать стоимость проекта
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
         </div>
-      </div>
 
      <div class="container">
   <div class="divider" aria-hidden="true">
@@ -413,6 +420,141 @@
       </a>
       <button class="card-screen__skip-btn" id="csSkip">Смотреть портфолио</button>
     </div>
+  </div>
+</div>
+      <!-- МОДУЛЬ: ИНТЕРАКТИВНЫЙ БРИФ / КАЛЬКУЛЯТОР WEBSPACE -->
+<div class="brief-modal" id="briefModal" aria-hidden="true">
+  <div class="brief-modal__backdrop" id="briefBackdrop"></div>
+  <div class="brief-window">
+    <button class="brief-close" id="briefClose" type="button" aria-label="Закрыть">✕</button>
+
+    <!-- Прогресс-бар шагов -->
+    <div class="brief-progress">
+      <div class="brief-progress__bar" id="briefProgressBar"></div>
+    </div>
+
+    <form class="brief-form" id="briefForm">
+      <!-- ШАГ 1: ТИП ПРОЕКТА -->
+      <div class="brief-step is-active" data-step="1">
+        <span class="kicker">Шаг 01 / 04</span>
+        <h3 class="brief-title">Какой проект <span class="accent">планируете?</span></h3>
+        <p class="brief-desc">Выберите базовый формат — от этого зависит архитектура и стек.</p>
+        
+        <div class="brief-options">
+          <label class="brief-option">
+            <input type="radio" name="project_type" value="Лендинг" data-price="45000" data-days="10" checked>
+            <div class="brief-option__card">
+              <span class="brief-option__title">Одностраничный промо-сайт / Лендинг</span>
+              <span class="brief-option__sub">Идеально для запуска услуги, эксперта или продукта</span>
+            </div>
+          </label>
+          <label class="brief-option">
+            <input type="radio" name="project_type" value="Многостраничный сайт" data-price="85000" data-days="18">
+            <div class="brief-option__card">
+              <span class="brief-option__title">Корпоративный сайт / Портфолио</span>
+              <span class="brief-option__sub">Несколько разделов, блог, глубокая презентация компании</span>
+            </div>
+          </label>
+          <label class="brief-option">
+            <input type="radio" name="project_type" value="Сервис / Интерактив" data-price="120000" data-days="25">
+            <div class="brief-option__card">
+              <span class="brief-option__title">Нестандартный проект / 3D-интерактив</span>
+              <span class="brief-option__sub">WebGL, Three.js анимации, сложные калькуляторы и логика</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- ШАГ 2: ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ -->
+      <div class="brief-step" data-step="2">
+        <span class="kicker">Шаг 02 / 04</span>
+        <h3 class="brief-title">Что потребуется <span class="accent">внедрить?</span></h3>
+        <p class="brief-desc">Можно выбрать несколько пунктов.</p>
+
+        <div class="brief-options">
+          <label class="brief-option">
+            <input type="checkbox" name="features" value="Уведомления на почту и CRM" data-price="8000" data-days="2">
+            <div class="brief-option__card">
+              <span class="brief-option__title">Заявки в Telegram / Email / Таблицы</span>
+              <span class="brief-option__sub">Мгновенные оповещения прямо на телефон</span>
+            </div>
+          </label>
+          <label class="brief-option">
+            <input type="checkbox" name="features" value="3D и креативные анимации" data-price="18000" data-days="5">
+            <div class="brief-option__card">
+              <span class="brief-option__title">Сложные анимации и 3D-элементы</span>
+              <span class="brief-option__sub">Плавный скролл, интерактивные сцены на GSAP/Three.js</span>
+            </div>
+          </label>
+          <label class="brief-option">
+            <input type="checkbox" name="features" value="Тексты и упаковка смыслов" data-price="12000" data-days="3">
+            <div class="brief-option__card">
+              <span class="brief-option__title">Написание текстов и сценария продаж</span>
+              <span class="brief-option__sub">Сформулирую УТП и сильные заголовки без шаблонной воды</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- ШАГ 3: ДЕДЛАЙН И БЮДЖЕТ -->
+      <div class="brief-step" data-step="3">
+        <span class="kicker">Шаг 03 / 04</span>
+        <h3 class="brief-title">Когда планируете <span class="accent">запуск?</span></h3>
+        
+        <div class="brief-options">
+          <label class="brief-option">
+            <input type="radio" name="deadline" value="Срочно (до 2 недель)" checked>
+            <div class="brief-option__card">
+              <span class="brief-option__title">Срочно (до 2 недель)</span>
+              <span class="brief-option__sub">Приоритетная разработка в сжатые сроки</span>
+            </div>
+          </label>
+          <label class="brief-option">
+            <input type="radio" name="deadline" value="В спокойном темпе (3-4 недели)">
+            <div class="brief-option__card">
+              <span class="brief-option__title">В стандартном темпе (3–4 недели)</span>
+              <span class="brief-option__sub">Спокойное проектирование и шлифовка всех деталей</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- ШАГ 4: КОНТАКТЫ И РАСЧЁТ -->
+      <div class="brief-step" data-step="4">
+        <span class="kicker">Финал</span>
+        <h3 class="brief-title">Предварительный <span class="accent">расчёт</span></h3>
+
+        <!-- Плашка с ценой -->
+        <div class="brief-summary">
+          <div class="brief-summary__item">
+            <span class="brief-summary__label">Ориентир стоимости:</span>
+            <span class="brief-summary__val" id="calcPrice">0 ₽</span>
+          </div>
+          <div class="brief-summary__item">
+            <span class="brief-summary__label">Срок работы:</span>
+            <span class="brief-summary__val" id="calcDays">0 дней</span>
+          </div>
+        </div>
+
+        <p class="brief-desc" style="margin-bottom: 20px;">Куда прислать концепцию и детальное коммерческое предложение?</p>
+
+        <div class="brief-inputs">
+          <input type="text" name="client_name" class="brief-input" placeholder="Ваше имя" required>
+          <input type="text" name="client_contact" class="brief-input" placeholder="Telegram (@username) или телефон" required>
+        </div>
+
+        <button type="submit" class="btn btn--primary" id="briefSubmitBtn" style="width: 100%; margin-top: 18px;">
+          Отправить заявку Глебу
+        </button>
+        <div id="briefStatus" style="font-size: 13px; margin-top: 10px; text-align: center; color: var(--wine);"></div>
+      </div>
+
+      <!-- Навигация вперед/назад -->
+      <div class="brief-nav">
+        <button type="button" class="btn btn--ghost" id="briefPrevBtn" style="display: none;">Назад</button>
+        <button type="button" class="btn btn--primary" id="briefNextBtn">Далее →</button>
+      </div>
+    </form>
   </div>
 </div>
 
