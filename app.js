@@ -442,8 +442,7 @@
       }, isMobileDevice ? 10 : 500);
     }
 
-// ... здесь заканчивается функция initCardEpicScreen
-    /* ── ИНТЕРАКТИВНЫЙ БРИФ / КАЛЬКУЛЯТОР ── */
+/* ── ИНТЕРАКТИВНЫЙ БРИФ / КАЛЬКУЛЯТОР ── */
     function initBriefModal(){
       const modal = $('#briefModal');
       const openBtn = $('#openBriefBtn');
@@ -480,17 +479,15 @@
         let total = 0;
         let days = 0;
 
-        // Базовый тип
         const checkedType = $('input[name="project_type"]:checked', form);
         if (checkedType) {
-          total += parseInt(checkedType.dataset.price || 0);
-          days += parseInt(checkedType.dataset.days || 0);
+          total += parseInt(checkedType.dataset.price || '0', 10);
+          days += parseInt(checkedType.dataset.days || '0', 10);
         }
 
-        // Фичи
         $$('input[name="features"]:checked', form).forEach(item => {
-          total += parseInt(item.dataset.price || 0);
-          days += parseInt(item.dataset.days || 0);
+          total += parseInt(item.dataset.price || '0', 10);
+          days += parseInt(item.dataset.days || '0', 10);
         });
 
         priceEl.textContent = `${total.toLocaleString('ru-RU')} ₽`;
@@ -513,15 +510,14 @@
         nextBtn.style.display = step < 4 ? 'inline-flex' : 'none';
       }
 
-      nextBtn.addEventListener('click', () => {
+      nextBtn && nextBtn.addEventListener('click', () => {
         if (currentStep < 4) goToStep(currentStep + 1);
       });
-      prevBtn.addEventListener('click', () => {
+      prevBtn && prevBtn.addEventListener('click', () => {
         if (currentStep > 1) goToStep(currentStep - 1);
       });
 
-      // Отправка заявки БЕЗ СЕРВЕРА (Email)
-    // Отправка заявки в Google Apps Script -> Telegram + Таблица
+      // Отправка заявки в Google Apps Script -> Telegram + Таблица
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitBtn = $('#briefSubmitBtn');
@@ -540,11 +536,9 @@
           website: formData.get('website') || ''
         };
 
-        // ВСТАВЬ СЮДА СВОЮ ССЫЛКУ ИЗ РАЗВЕРТЫВАНИЯ GOOGLE (заканчивается на /exec):
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFnd-YIwu_rvu5TkoYOXdpntKhGK81cL4VIeS861eS873SIz5qMwlaN5Bo75MDEVCXBg/exec';
 
-try {
-          // Отправляем в Google Script в режиме no-cors
+        try {
           await fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
@@ -554,7 +548,6 @@ try {
             body: JSON.stringify(data)
           });
 
-          // В режиме no-cors ответ непрозрачный, но если не выбросило ошибку — данные ушли
           statusEl.style.color = '#387346';
           statusEl.textContent = 'Заявка отправлена! Глеб свяжется с вами сегодня.';
 
@@ -574,11 +567,10 @@ try {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Отправить заявку Глебу';
         }
-        }
       });
-    }
+    }СКОБКА ЗАКРЫВАЕТ ФУНКЦИЮ start()!
 
-  } // <-- ВОТ ЭТА СКОБКА ЗАКРЫВАЕТ ФУНКЦИЮ start()!
+} // закрывает start()
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(start, 1);
