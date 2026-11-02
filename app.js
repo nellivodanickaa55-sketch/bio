@@ -545,7 +545,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              access_key: 'b3df0580-5bfa-4cbe-b43e-c6e3b5df56f9', // Тестовый ключ, можешь за 1 минуту выпустить свой на web3forms.com
+              access_key: '21076f7f-a992-4026-bf06-747ce097f5ac', // Тестовый ключ, можешь за 1 минуту выпустить свой на web3forms.com
               subject: `🔥 Новая заявка WebSpace от ${data.name}`,
               from_name: 'WebSpace Brief',
               ...data
