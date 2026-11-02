@@ -564,7 +564,7 @@
             submitBtn.textContent = 'Отправить заявку Глебу';
             statusEl.textContent = '';
           }, 3000);
-        } catch (err) {
+} catch (err) {
           console.warn('Ошибка отправки заявки:', err);
           statusEl.style.color = 'var(--wine)';
           statusEl.textContent = 'Не удалось отправить. Напишите напрямую: @xaliva_5';
@@ -573,6 +573,8 @@
         }
       });
     }
+
+  } // <-- ВОТ ЭТА СКОБКА ЗАКРЫВАЕТ ФУНКЦИЮ start()!
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(start, 1);
