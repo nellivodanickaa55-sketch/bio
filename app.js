@@ -543,15 +543,18 @@
         // ВСТАВЬ СЮДА СВОЮ ССЫЛКУ ИЗ РАЗВЕРТЫВАНИЯ GOOGLE (заканчивается на /exec):
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFnd-YIwu_rvu5TkoYOXdpntKhGK81cL4VIeS861eS873SIz5qMwlaN5Bo75MDEVCXBg/exec';
 
-        try {
-          const res = await fetch(SCRIPT_URL, {
+try {
+          // Отправляем в Google Script в режиме no-cors
+          await fetch(SCRIPT_URL, {
             method: 'POST',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8'
+            },
             body: JSON.stringify(data)
           });
-          const result = await res.json();
 
-          if (!result.ok) throw new Error(result.error || 'send_failed');
-
+          // В режиме no-cors ответ непрозрачный, но если не выбросило ошибку — данные ушли
           statusEl.style.color = '#387346';
           statusEl.textContent = 'Заявка отправлена! Глеб свяжется с вами сегодня.';
 
@@ -564,12 +567,13 @@
             submitBtn.textContent = 'Отправить заявку Глебу';
             statusEl.textContent = '';
           }, 3000);
-} catch (err) {
+        } catch (err) {
           console.warn('Ошибка отправки заявки:', err);
           statusEl.style.color = 'var(--wine)';
           statusEl.textContent = 'Не удалось отправить. Напишите напрямую: @xaliva_5';
           submitBtn.disabled = false;
           submitBtn.textContent = 'Отправить заявку Глебу';
+        }
         }
       });
     }
