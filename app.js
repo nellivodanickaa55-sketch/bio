@@ -570,7 +570,7 @@
       });
     }
 
-} // закрывает start()
+  }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(start, 1);
