@@ -521,6 +521,7 @@
       });
 
       // Отправка заявки БЕЗ СЕРВЕРА (Email)
+    // Отправка заявки в Google Apps Script -> Telegram + Таблица
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitBtn = $('#briefSubmitBtn');
@@ -535,49 +536,43 @@
           features: formData.getAll('features').join(', ') || 'Нет',
           deadline: formData.get('deadline'),
           calc_price: priceEl.textContent,
-          calc_days: daysEl.textContent
+          calc_days: daysEl.textContent,
+          website: formData.get('website') || ''
         };
 
-        // ТУТ БЕСПЛАТНЫЙ ШЛЮЗ: Web3Forms (не требует регистрации, работает сразу)
-        // Чтобы письма приходили тебе, просто вставь свой email на web3forms.com и вставь access_key
-        try {
-          const res = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              access_key: '21076f7f-a992-4026-bf06-747ce097f5ac', // Тестовый ключ, можешь за 1 минуту выпустить свой на web3forms.com
-              subject: `🔥 Новая заявка WebSpace от ${data.name}`,
-              from_name: 'WebSpace Brief',
-              ...data
-            })
-          });
+        // ВСТАВЬ СЮДА СВОЮ ССЫЛКУ ИЗ РАЗВЕРТЫВАНИЯ GOOGLE (заканчивается на /exec):
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFnd-YIwu_rvu5TkoYOXdpntKhGK81cL4VIeS861eS873SIz5qMwlaN5Bo75MDEVCXBg/exec';
 
-          if (res.ok) {
-            statusEl.style.color = '#387346';
-            statusEl.textContent = 'Заявка отправлена! Глеб свяжется с вами сегодня.';
-            setTimeout(() => {
-              closeModal();
-              form.reset();
-              goToStep(1);
-              submitBtn.disabled = false;
-              submitBtn.textContent = 'Отправить заявку Глебу';
-              statusEl.textContent = '';
-            }, 3000);
-          } else {
-            throw new Error();
-          }
-        } catch {
-          // Если нет сети, сохраняем локально в браузер
-          localStorage.setItem('last_lead', JSON.stringify(data));
+        try {
+          const res = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(data)
+          });
+          const result = await res.json();
+
+          if (!result.ok) throw new Error(result.error || 'send_failed');
+
+          statusEl.style.color = '#387346';
+          statusEl.textContent = 'Заявка отправлена! Глеб свяжется с вами сегодня.';
+
+          setTimeout(() => {
+            closeModal();
+            form.reset();
+            updateCalculation();
+            goToStep(1);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Отправить заявку Глебу';
+            statusEl.textContent = '';
+          }, 3000);
+        } catch (err) {
+          console.warn('Ошибка отправки заявки:', err);
           statusEl.style.color = 'var(--wine)';
-          statusEl.textContent = 'Заявка сохранена локально! Свяжитесь через Telegram @xaliva_5';
+          statusEl.textContent = 'Не удалось отправить. Напишите напрямую: @xaliva_5';
           submitBtn.disabled = false;
+          submitBtn.textContent = 'Отправить заявку Глебу';
         }
       });
     }
-    // ВАЖНО: убедись, что перед этим "if" закрыты все фигурные скобки функций выше!
-
-  } // Это закрывает функцию start()
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(start, 1);
