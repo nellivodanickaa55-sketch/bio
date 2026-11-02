@@ -34,6 +34,7 @@
       initFloatDecors();
       initCardModal();
       initCardEpicScreen();
+      initBriefModal();
       ScrollTrigger.refresh();
     }
 
@@ -442,7 +443,138 @@
     }
 
 // ... здесь заканчивается функция initCardEpicScreen
-    
+    /* ── ИНТЕРАКТИВНЫЙ БРИФ / КАЛЬКУЛЯТОР ── */
+    function initBriefModal(){
+      const modal = $('#briefModal');
+      const openBtn = $('#openBriefBtn');
+      const closeBtn = $('#briefClose');
+      const backdrop = $('#briefBackdrop');
+      const form = $('#briefForm');
+      if (!modal || !form) return;
+
+      const steps = $$('.brief-step', modal);
+      const prevBtn = $('#briefPrevBtn');
+      const nextBtn = $('#briefNextBtn');
+      const progressBar = $('#briefProgressBar');
+      const priceEl = $('#calcPrice');
+      const daysEl = $('#calcDays');
+      const statusEl = $('#briefStatus');
+      let currentStep = 1;
+
+      // Открытие / закрытие
+      const openModal = () => {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+      };
+      const closeModal = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+      };
+
+      openBtn && openBtn.addEventListener('click', openModal);
+      closeBtn && closeBtn.addEventListener('click', closeModal);
+      backdrop && backdrop.addEventListener('click', closeModal);
+
+      // Расчет цены
+      function updateCalculation(){
+        let total = 0;
+        let days = 0;
+
+        // Базовый тип
+        const checkedType = $('input[name="project_type"]:checked', form);
+        if (checkedType) {
+          total += parseInt(checkedType.dataset.price || 0);
+          days += parseInt(checkedType.dataset.days || 0);
+        }
+
+        // Фичи
+        $$('input[name="features"]:checked', form).forEach(item => {
+          total += parseInt(item.dataset.price || 0);
+          days += parseInt(item.dataset.days || 0);
+        });
+
+        priceEl.textContent = `${total.toLocaleString('ru-RU')} ₽`;
+        daysEl.textContent = `~${days} дней`;
+      }
+
+      form.addEventListener('change', updateCalculation);
+      updateCalculation();
+
+      // Навигация по шагам
+      function goToStep(step){
+        steps.forEach(s => s.classList.remove('is-active'));
+        const target = $(`[data-step="${step}"]`, modal);
+        if (target) target.classList.add('is-active');
+
+        currentStep = step;
+        progressBar.style.width = `${(step / 4) * 100}%`;
+
+        prevBtn.style.display = step > 1 ? 'inline-flex' : 'none';
+        nextBtn.style.display = step < 4 ? 'inline-flex' : 'none';
+      }
+
+      nextBtn.addEventListener('click', () => {
+        if (currentStep < 4) goToStep(currentStep + 1);
+      });
+      prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) goToStep(currentStep - 1);
+      });
+
+      // Отправка заявки БЕЗ СЕРВЕРА (Email)
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = $('#briefSubmitBtn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправка...';
+
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get('client_name'),
+          contact: formData.get('client_contact'),
+          type: formData.get('project_type'),
+          features: formData.getAll('features').join(', ') || 'Нет',
+          deadline: formData.get('deadline'),
+          calc_price: priceEl.textContent,
+          calc_days: daysEl.textContent
+        };
+
+        // ТУТ БЕСПЛАТНЫЙ ШЛЮЗ: Web3Forms (не требует регистрации, работает сразу)
+        // Чтобы письма приходили тебе, просто вставь свой email на web3forms.com и вставь access_key
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              access_key: 'b3df0580-5bfa-4cbe-b43e-c6e3b5df56f9', // Тестовый ключ, можешь за 1 минуту выпустить свой на web3forms.com
+              subject: `🔥 Новая заявка WebSpace от ${data.name}`,
+              from_name: 'WebSpace Brief',
+              ...data
+            })
+          });
+
+          if (res.ok) {
+            statusEl.style.color = '#387346';
+            statusEl.textContent = 'Заявка отправлена! Глеб свяжется с вами сегодня.';
+            setTimeout(() => {
+              closeModal();
+              form.reset();
+              goToStep(1);
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Отправить заявку Глебу';
+              statusEl.textContent = '';
+            }, 3000);
+          } else {
+            throw new Error();
+          }
+        } catch {
+          // Если нет сети, сохраняем локально в браузер
+          localStorage.setItem('last_lead', JSON.stringify(data));
+          statusEl.style.color = 'var(--wine)';
+          statusEl.textContent = 'Заявка сохранена локально! Свяжитесь через Telegram @xaliva_5';
+          submitBtn.disabled = false;
+        }
+      });
+    }
     // ВАЖНО: убедись, что перед этим "if" закрыты все фигурные скобки функций выше!
 
   } // Это закрывает функцию start()
