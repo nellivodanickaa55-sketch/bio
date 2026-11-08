@@ -1448,3 +1448,11 @@ html.is-modal-open body{overflow:hidden}
   /* глобальный .btn{width:100%} на мобилке ломал ряд кнопок */
   .brief-nav .btn{flex:1 1 0;width:auto;padding:14px 16px;justify-content:center}
 }
+/* Скрытые подписи для полей (видны только скринридерам) */
+.visually-hidden{
+  position:absolute!important;width:1px;height:1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;
+}
+.brief-note{font-size:13px;opacity:.7;margin:8px 0 18px}
+.brief-submit{width:100%;margin-top:18px}
+.brief-status{font-size:13px;margin-top:10px;text-align:center;color:var(--wine)}
