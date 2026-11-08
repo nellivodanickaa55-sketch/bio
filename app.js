@@ -605,7 +605,7 @@
           submitBtn.textContent = SUBMIT_LABEL;
         }
       });
-    }
+    
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(start, 1);
