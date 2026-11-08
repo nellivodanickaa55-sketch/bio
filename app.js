@@ -533,6 +533,32 @@
       const closeBt = $('#thanksClose');
       let stopFx = null;
       let lastFocus = null;
+      // Пары фраз: [строка 1, строка 2 с акцентом, подпись]
+      const QUOTES = [
+        ['Пока другие думают —', 'вы уже строите.', 'Большие компании тоже начинались с одной заявки.'],
+        ['Империи не строят за выходные.', 'Их начинают в обычный день.', 'Сегодня как раз такой.'],
+        ['Рынок не ждёт готовых.', 'Он ждёт решительных.', 'Вы только что это доказали.'],
+        ['Мечтают многие.', 'Строят единицы.', 'И вы среди них.'],
+        ['Каждый громкий бренд', 'когда-то был одной заявкой.', 'Ваша уже у меня.'],
+        ['Лучшее время начать было вчера.', 'Следующее — сейчас.', 'Вы выбрали сейчас.'],
+        ['Масштаб не случается.', 'Его решают.', 'Решение принято. Остальное — моя работа.']
+      ];
+      const line1El = $('#tsLine1');
+      const line2El = $('#tsLine2');
+      const mottoEl = $('#tsMotto');
+      let lastQuote = -1;
+
+      // Случайная фраза, но не та же, что в прошлый раз
+      function pickQuote(){
+        let i;
+        do { i = Math.floor(Math.random() * QUOTES.length); }
+        while (i === lastQuote && QUOTES.length > 1);
+        lastQuote = i;
+        const [l1, l2, motto] = QUOTES[i];
+        if (line1El) line1El.textContent = l1;
+        if (line2El) line2El.textContent = l2;
+        if (mottoEl) mottoEl.textContent = motto;
+      }
 
       function animateIn(){
         const lines = $$('.ts-line > span', screen);
@@ -564,7 +590,7 @@
         subEl.textContent = name
           ? `${name}, заявка у меня. Отвечу в течение дня с идеями и точной сметой.`
           : 'Заявка у меня. Отвечу в течение дня с идеями и точной сметой.';
-
+          pickQuote();
         screen.classList.add('is-active');
         screen.setAttribute('aria-hidden', 'false');
         document.documentElement.classList.add('is-modal-open');
@@ -764,6 +790,21 @@
 
       updateCalculation();
       goToStep(1);
+      /* Автооткрытие по ссылке ?brief (для постов и переписки) */
+      const params = new URLSearchParams(location.search);
+      if (params.has('brief') && !params.has('card')) {
+        // Ждём, пока уйдёт прелоадер и запустится плавный скролл
+        const autoOpen = () => {
+          if (document.body.classList.contains('is-loaded')) openModal();
+          else setTimeout(autoOpen, 200);
+        };
+        setTimeout(autoOpen, 300);
+
+        // Убираем ?brief из адреса, чтобы окно не открывалось снова при обновлении
+        params.delete('brief');
+        const qs = params.toString();
+        history.replaceState(null, '', location.pathname + (qs ? `?${qs}` : '') + location.hash);
+      }
 
       /* Отправка: Google Apps Script -> Telegram + таблица */
       form.addEventListener('submit', async e => {
