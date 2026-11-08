@@ -34,7 +34,6 @@
       initFloatDecors();
       initCardModal();
       initCardEpicScreen();
-      initBriefModal();
       ScrollTrigger.refresh();
     }
 
@@ -598,14 +597,17 @@
             statusEl.classList.remove('is-ok');
             statusEl.textContent = '';
           }, 3000);
-        } catch (err) {
+} catch (err) {
           console.warn('Ошибка отправки заявки:', err);
           statusEl.textContent = 'Не удалось отправить. Напишите напрямую: @xaliva_5';
           submitBtn.disabled = false;
           submitBtn.textContent = SUBMIT_LABEL;
         }
-      });
-    
+      }); // конец обработчика submit
+    }     // конец initBriefModal
+
+    initBriefModal();
+  }       // конец start
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(start, 1);
