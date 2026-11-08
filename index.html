@@ -534,6 +534,7 @@
       <div class="brief-step" data-step="4">
         <span class="kicker">Финал</span>
         <h3 class="brief-title">Предварительный <span class="accent">расчёт</span></h3>
+        <ul class="brief-recap" id="briefRecap" aria-label="Ваш выбор"></ul>
 
         <div class="brief-summary">
           <div class="brief-summary__item">
@@ -563,10 +564,11 @@
       </div>
 
     <!-- Навигация -->
-      <div class="brief-nav">
-        <button type="button" class="btn btn--ghost" id="briefPrevBtn" style="display: none;">Назад</button>
-        <button type="button" class="btn btn--primary" id="briefNextBtn">Далее →</button>
-      </div>
+   <!-- Навигация -->
+<div class="brief-nav">
+  <button type="button" class="btn btn--ghost" id="briefPrevBtn" hidden>← Назад</button>
+  <button type="button" class="btn btn--primary" id="briefNextBtn">Далее →</button>
+</div>
     </form>
   </div><!-- /.brief-window -->
 </div><!-- /.brief-modal -->
@@ -588,6 +590,40 @@
   window.THREE = THREE;
   window.GLTFLoader = GLTFLoader;
 </script>
+  <!-- ЭКРАН ПОСЛЕ ОТПРАВКИ ЗАЯВКИ -->
+<div class="thanks-screen" id="thanksScreen" role="dialog" aria-modal="true" aria-labelledby="tsQuote" aria-hidden="true">
+  <canvas class="thanks-screen__canvas" id="thanksCanvas" aria-hidden="true"></canvas>
+  <div class="thanks-screen__watermark" aria-hidden="true">W</div>
+
+  <button class="thanks-screen__close" id="thanksClose" type="button" aria-label="Закрыть и вернуться на сайт">✕</button>
+
+  <div class="thanks-screen__center">
+    <div class="thanks-check" aria-hidden="true">
+      <svg viewBox="0 0 80 80">
+        <circle class="thanks-check__ring" cx="40" cy="40" r="36"/>
+        <path class="thanks-check__tick" d="M24 41l11 11 21-23"/>
+      </svg>
+    </div>
+
+    <div class="thanks-screen__kicker" id="tsKicker">Заявка принята</div>
+
+    <h2 class="thanks-screen__quote" id="tsQuote">
+      <span class="ts-line"><span>Пока другие думают —</span></span>
+      <span class="ts-line"><span class="ts-accent">вы уже строите.</span></span>
+    </h2>
+
+    <p class="thanks-screen__sub" id="tsSub">Заявка у меня. Отвечу в течение дня с идеями и точной сметой.</p>
+    <p class="thanks-screen__motto" id="tsMotto">Большие компании тоже начинались с одной заявки.</p>
+
+    <div class="thanks-screen__action" id="tsAction">
+      <a href="https://t.me/xaliva_5" class="btn-card-epic" target="_blank" rel="noopener">
+        <span>Написать в Telegram сейчас</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <button class="card-screen__skip-btn" id="thanksBack" type="button">Вернуться на сайт</button>
+    </div>
+  </div>
+</div>
 <script src="app.js"></script>
 </body>
 </html>
