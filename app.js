@@ -441,7 +441,159 @@
       }, isMobileDevice ? 10 : 500);
     }
 
-/* ── ИНТЕРАКТИВНЫЙ БРИФ / КАЛЬКУЛЯТОР ── */
+/* ── ЭКРАН ПОСЛЕ ОТПРАВКИ: искры и волны на canvas ── */
+    function runParticles(canvas){
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return () => {};
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const COUNT = lowPower ? 60 : 120;
+      const t0 = performance.now();
+      const parts = [];
+      let w = 0, h = 0, cx = 0, cy = 0, raf = 0;
+
+      function resize(){
+        w = innerWidth; h = innerHeight;
+        cx = w / 2; cy = h * 0.36;
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      resize();
+      addEventListener('resize', resize);
+
+      // Стартовый взрыв из центра (где галочка)
+      for (let i = 0; i < COUNT; i++){
+        const ang = Math.random() * Math.PI * 2;
+        const sp  = 2 + Math.random() * 6;
+        parts.push({
+          x: cx, y: cy,
+          vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp,
+          r: 0.8 + Math.random() * 2.2,
+          a: 0.45 + Math.random() * 0.5,
+          ph: Math.random() * 10
+        });
+      }
+
+      // Улетевшая искра возвращается снизу и снова поднимается
+      function respawn(p){
+        p.x = Math.random() * w; p.y = h + 10;
+        p.vx = (Math.random() - 0.5) * 0.4; p.vy = -0.3;
+      }
+
+      function frame(now){
+        const t = (now - t0) / 1000;
+        ctx.clearRect(0, 0, w, h);
+        ctx.globalCompositeOperation = 'lighter';
+
+        // Три волны от центра в первые секунды
+        for (let k = 0; k < 3; k++){
+          const lt = t - k * 0.35;
+          if (lt < 0 || lt > 2.4) continue;
+          const pr = lt / 2.4;
+          ctx.beginPath();
+          ctx.arc(cx, cy, 40 + pr * Math.max(w, h) * 0.6, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(255,190,170,${(1 - pr) * 0.35})`;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+
+        // Искры: тормозят после взрыва и медленно поднимаются вверх
+        for (const p of parts){
+          p.vx *= 0.965;
+          p.vy = p.vy * 0.965 - 0.012;
+          p.x += p.vx; p.y += p.vy;
+          if (p.y < -10 || p.x < -10 || p.x > w + 10) respawn(p);
+
+          const alpha = p.a * (0.6 + 0.4 * Math.sin(t * 3 + p.ph));
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,214,196,${alpha})`;
+          ctx.fill();
+        }
+
+        ctx.globalCompositeOperation = 'source-over';
+        raf = requestAnimationFrame(frame);
+      }
+      raf = requestAnimationFrame(frame);
+
+      // Функция остановки: вызывается при закрытии экрана
+      return () => {
+        cancelAnimationFrame(raf);
+        removeEventListener('resize', resize);
+        ctx.clearRect(0, 0, w, h);
+      };
+    }
+
+    function createThanksScreen(){
+      const screen = $('#thanksScreen');
+      if (!screen) return { open(){} };
+
+      const canvas  = $('#thanksCanvas');
+      const subEl   = $('#tsSub');
+      const backBtn = $('#thanksBack');
+      const closeBt = $('#thanksClose');
+      let stopFx = null;
+      let lastFocus = null;
+
+      function animateIn(){
+        const lines = $$('.ts-line > span', screen);
+        const fades = ['#tsKicker', '#tsSub', '#tsMotto', '#tsAction'];
+
+        if (reduce || !window.gsap) {
+          if (window.gsap) gsap.set([...lines, ...fades], { clearProps: 'all' });
+          return;
+        }
+
+        gsap.set('.thanks-check__ring', { strokeDashoffset: 227 });
+        gsap.set('.thanks-check__tick', { strokeDashoffset: 48 });
+        gsap.set(lines, { yPercent: 120 });
+        gsap.set(fades, { opacity: 0, y: 20 });
+
+        gsap.timeline({ delay: 0.15 })
+          .to('.thanks-check__ring', { strokeDashoffset: 0, duration: 0.9, ease: 'power2.inOut' })
+          .to('.thanks-check__tick', { strokeDashoffset: 0, duration: 0.45, ease: 'power3.out' }, '-=0.25')
+          .to('#tsKicker', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.1')
+          .to(lines, { yPercent: 0, duration: 1, ease: 'power4.out', stagger: 0.14 }, '-=0.2')
+          .to('#tsSub',    { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
+          .to('#tsMotto',  { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.45')
+          .to('#tsAction', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4');
+      }
+
+      function open(name){
+        lastFocus = document.activeElement;
+        // textContent, а не innerHTML: имя вводит посетитель
+        subEl.textContent = name
+          ? `${name}, заявка у меня. Отвечу в течение дня с идеями и точной сметой.`
+          : 'Заявка у меня. Отвечу в течение дня с идеями и точной сметой.';
+
+        screen.classList.add('is-active');
+        screen.setAttribute('aria-hidden', 'false');
+        document.documentElement.classList.add('is-modal-open');
+        if (lenis) lenis.stop();
+
+        if (!reduce && canvas) stopFx = runParticles(canvas);
+        animateIn();
+        setTimeout(() => backBtn && backBtn.focus(), 700);
+      }
+
+      function close(){
+        screen.classList.remove('is-active');
+        screen.setAttribute('aria-hidden', 'true');
+        document.documentElement.classList.remove('is-modal-open');
+        if (lenis) lenis.start();
+        if (stopFx) { stopFx(); stopFx = null; }
+        if (lastFocus) lastFocus.focus();
+      }
+
+      backBtn && backBtn.addEventListener('click', close);
+      closeBt && closeBt.addEventListener('click', close);
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && screen.classList.contains('is-active')) close();
+      });
+
+      return { open };
+    }
+
+    /* ── ИНТЕРАКТИВНЫЙ БРИФ / КАЛЬКУЛЯТОР ── */
     function initBriefModal(){
       const modal = $('#briefModal');
       const form  = $('#briefForm');
@@ -460,9 +612,11 @@
       const priceEl     = $('#calcPrice');
       const daysEl      = $('#calcDays');
       const statusEl    = $('#briefStatus');
+      const recapEl     = $('#briefRecap');
+      const thanks      = createThanksScreen();
 
       const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFnd-YIwu_rvu5TkoYOXdpntKhGK81cL4VIeS861eS873SIz5qMwlaN5Bo75MDEVCXBg/exec';
-      const PRICE_CAP = 75000;      // выше этой суммы показываем «индивидуальный расчёт»
+      const PRICE_CAP = 75000;      // выше этой суммы показываем «индивидуально»
       const PARALLEL_FACTOR = 0.5;  // модули делаются параллельно, добавляют ~половину срока
       const SUBMIT_LABEL = 'Отправить заявку Глебу';
 
@@ -485,17 +639,17 @@
         setTimeout(() => win.focus(), 50);
       }
 
-      function closeModal(){
+      function closeModal(restoreFocus = true){
         modal.classList.remove('is-open');
         modal.setAttribute('aria-hidden', 'true');
         document.documentElement.classList.remove('is-modal-open');
         if (lenis) lenis.start();
-        if (lastFocus) lastFocus.focus();
+        if (restoreFocus && lastFocus) lastFocus.focus();
       }
 
       openBtn  && openBtn.addEventListener('click', openModal);
-      closeBtn && closeBtn.addEventListener('click', closeModal);
-      backdrop && backdrop.addEventListener('click', closeModal);
+      closeBtn && closeBtn.addEventListener('click', () => closeModal());
+      backdrop && backdrop.addEventListener('click', () => closeModal());
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
       });
@@ -534,8 +688,52 @@
         daysEl.textContent  = `≈ ${days} ${pluralDays(days)}`;
       }
 
-      form.addEventListener('change', updateCalculation);
-      updateCalculation();
+      /* Сводка выбора на финальном шаге с кнопками «Изменить» */
+      function renderRecap(){
+        if (!recapEl) return;
+        const type  = $('input[name="project_type"]:checked', form);
+        const feats = $$('input[name="features"]:checked', form).map(i => i.value);
+        const dl    = $('input[name="deadline"]:checked', form);
+
+        const rows = [
+          { label: 'Формат', value: type ? type.value : 'Не выбран',                     step: 1 },
+          { label: 'Опции',  value: feats.length ? feats.join(', ') : 'Без доп. опций', step: 2 },
+          { label: 'Запуск', value: dl ? dl.value : 'Не выбран',                         step: 3 }
+        ];
+
+        recapEl.replaceChildren(...rows.map(r => {
+          const li = document.createElement('li');
+          li.className = 'brief-recap__row';
+
+          const label = document.createElement('span');
+          label.className = 'brief-recap__label';
+          label.textContent = r.label;
+
+          const value = document.createElement('span');
+          value.className = 'brief-recap__value';
+          value.textContent = r.value;
+
+          const edit = document.createElement('button');
+          edit.type = 'button';
+          edit.className = 'brief-recap__edit';
+          edit.textContent = 'Изменить';
+          edit.dataset.goto = String(r.step);
+          edit.setAttribute('aria-label', `Изменить: ${r.label}`);
+
+          li.append(label, value, edit);
+          return li;
+        }));
+      }
+
+      recapEl && recapEl.addEventListener('click', e => {
+        const btn = e.target.closest('[data-goto]');
+        if (btn) goToStep(Number(btn.dataset.goto));
+      });
+
+      form.addEventListener('change', () => {
+        updateCalculation();
+        if (currentStep === TOTAL) renderRecap();
+      });
 
       /* Шаги */
       function goToStep(step){
@@ -544,6 +742,7 @@
         progressBar.style.width = `${(step / TOTAL) * 100}%`;
         prevBtn.hidden = step === 1;
         nextBtn.hidden = step === TOTAL;
+        if (step === TOTAL) renderRecap();
         win.scrollTop = 0;
       }
 
@@ -554,20 +753,31 @@
         if (currentStep > 1) goToStep(currentStep - 1);
       });
 
+      function resetForm(){
+        form.reset();
+        updateCalculation();
+        goToStep(1);
+        submitBtn.disabled = false;
+        submitBtn.textContent = SUBMIT_LABEL;
+        statusEl.textContent = '';
+      }
+
+      updateCalculation();
       goToStep(1);
 
       /* Отправка: Google Apps Script -> Telegram + таблица */
       form.addEventListener('submit', async e => {
         e.preventDefault();
+        if (submitBtn.disabled) return; // защита от двойного нажатия
+
         submitBtn.disabled = true;
         submitBtn.textContent = 'Отправка...';
-        statusEl.classList.remove('is-ok');
         statusEl.textContent = '';
 
         const fd = new FormData(form);
         const data = {
-          name:       String(fd.get('client_name') || '').trim(),
-          contact:    String(fd.get('client_contact') || '').trim(),
+          name:       String(fd.get('client_name') || '').trim().slice(0, 80),
+          contact:    String(fd.get('client_contact') || '').trim().slice(0, 80),
           type:       fd.get('project_type'),
           features:   fd.getAll('features').join(', ') || 'Нет',
           deadline:   fd.get('deadline'),
@@ -584,20 +794,10 @@
             body: JSON.stringify(data)
           });
 
-          statusEl.classList.add('is-ok');
-          statusEl.textContent = 'Заявка отправлена. Глеб свяжется с вами сегодня.';
-
-          setTimeout(() => {
-            closeModal();
-            form.reset();
-            updateCalculation();
-            goToStep(1);
-            submitBtn.disabled = false;
-            submitBtn.textContent = SUBMIT_LABEL;
-            statusEl.classList.remove('is-ok');
-            statusEl.textContent = '';
-          }, 3000);
-} catch (err) {
+          closeModal(false);
+          thanks.open(data.name);
+          resetForm();
+        } catch (err) {
           console.warn('Ошибка отправки заявки:', err);
           statusEl.textContent = 'Не удалось отправить. Напишите напрямую: @xaliva_5';
           submitBtn.disabled = false;
