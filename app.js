@@ -445,129 +445,148 @@
 /* ── ИНТЕРАКТИВНЫЙ БРИФ / КАЛЬКУЛЯТОР ── */
     function initBriefModal(){
       const modal = $('#briefModal');
-      const openBtn = $('#openBriefBtn');
-      const closeBtn = $('#briefClose');
-      const backdrop = $('#briefBackdrop');
-      const form = $('#briefForm');
+      const form  = $('#briefForm');
       if (!modal || !form) return;
 
-      const steps = $$('.brief-step', modal);
-      const prevBtn = $('#briefPrevBtn');
-      const nextBtn = $('#briefNextBtn');
+      const win         = $('.brief-window', modal);
+      const openBtn     = $('#openBriefBtn');
+      const closeBtn    = $('#briefClose');
+      const backdrop    = $('#briefBackdrop');
+      const steps       = $$('.brief-step', modal);
+      const TOTAL       = steps.length;
+      const prevBtn     = $('#briefPrevBtn');
+      const nextBtn     = $('#briefNextBtn');
+      const submitBtn   = $('#briefSubmitBtn');
       const progressBar = $('#briefProgressBar');
-      const priceEl = $('#calcPrice');
-      const daysEl = $('#calcDays');
-      const statusEl = $('#briefStatus');
-      let currentStep = 1;
+      const priceEl     = $('#calcPrice');
+      const daysEl      = $('#calcDays');
+      const statusEl    = $('#briefStatus');
 
-      // Открытие / закрытие
-      const openModal = () => {
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFnd-YIwu_rvu5TkoYOXdpntKhGK81cL4VIeS861eS873SIz5qMwlaN5Bo75MDEVCXBg/exec';
+      const PRICE_CAP = 75000;      // выше этой суммы показываем «индивидуальный расчёт»
+      const PARALLEL_FACTOR = 0.5;  // модули делаются параллельно, добавляют ~половину срока
+      const SUBMIT_LABEL = 'Отправить заявку Глебу';
+
+      let currentStep = 1;
+      let lastFocus = null;
+
+      // Колесо и свайп внутри окна не отдаём Lenis, иначе окно не прокручивается
+      ['wheel', 'touchmove'].forEach(evt =>
+        win.addEventListener(evt, e => e.stopPropagation(), { passive: true })
+      );
+
+      /* Открытие / закрытие */
+      function openModal(){
+        lastFocus = document.activeElement;
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
-      };
-      const closeModal = () => {
+        document.documentElement.classList.add('is-modal-open');
+        if (lenis) lenis.stop();
+        win.scrollTop = 0;
+        setTimeout(() => win.focus(), 50);
+      }
+
+      function closeModal(){
         modal.classList.remove('is-open');
         modal.setAttribute('aria-hidden', 'true');
-      };
+        document.documentElement.classList.remove('is-modal-open');
+        if (lenis) lenis.start();
+        if (lastFocus) lastFocus.focus();
+      }
 
-      openBtn && openBtn.addEventListener('click', openModal);
+      openBtn  && openBtn.addEventListener('click', openModal);
       closeBtn && closeBtn.addEventListener('click', closeModal);
       backdrop && backdrop.addEventListener('click', closeModal);
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
 
-      // Расчет цены
-     // Расчёт цены: показываем «от X ₽», ограничиваем максимум,
-// дни считаем с учётом параллельной работы над модулями
-const PRICE_CAP = 60000;     // выше этой суммы предлагаем индивидуальный расчёт
-const PARALLEL_FACTOR = 0.5; // доп. модули добавляют примерно половину своего срока
+      /* Расчёт цены */
+      function pluralDays(n){
+        const m10 = n % 10, m100 = n % 100;
+        if (m10 === 1 && m100 !== 11) return 'день';
+        if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return 'дня';
+        return 'дней';
+      }
 
-// Склонение: 1 день, 2 дня, 5 дней
-function pluralDays(n){
-  const mod10 = n % 10, mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return 'день';
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'дня';
-  return 'дней';
-}
+      function updateCalculation(){
+        const type = $('input[name="project_type"]:checked', form);
+        if (!type) {
+          priceEl.textContent = 'Выберите тип сайта';
+          daysEl.textContent = '—';
+          return;
+        }
 
-function updateCalculation(){
-  const checkedType = $('input[name="project_type"]:checked', form);
+        let total = parseInt(type.dataset.price || '0', 10);
+        let days  = parseInt(type.dataset.days  || '0', 10);
 
-  // Тип не выбран: не показываем 0 ₽
-  if (!checkedType) {
-    priceEl.textContent = 'Выберите тип сайта';
-    daysEl.textContent = '';
-    return;
-  }
+        $$('input[name="features"]:checked', form).forEach(item => {
+          total += parseInt(item.dataset.price || '0', 10);
+          days  += Math.ceil(parseInt(item.dataset.days || '0', 10) * PARALLEL_FACTOR);
+        });
 
-  let total = parseInt(checkedType.dataset.price || '0', 10);
-  let days = parseInt(checkedType.dataset.days || '0', 10);
+        if (total > PRICE_CAP) {
+          priceEl.textContent = 'Индивидуально';
+          daysEl.textContent  = 'Обсудим на брифе';
+          return;
+        }
 
-  $$('input[name="features"]:checked', form).forEach(item => {
-    total += parseInt(item.dataset.price || '0', 10);
-    days += Math.ceil(parseInt(item.dataset.days || '0', 10) * PARALLEL_FACTOR);
-  });
+        priceEl.textContent = `от ${total.toLocaleString('ru-RU')} ₽`;
+        daysEl.textContent  = `≈ ${days} ${pluralDays(days)}`;
+      }
 
-  if (total > PRICE_CAP) {
-    priceEl.textContent = 'Индивидуальный расчёт';
-    daysEl.textContent = 'Обсудим объём на коротком брифе';
-    return;
-  }
+      form.addEventListener('change', updateCalculation);
+      updateCalculation();
 
-  priceEl.textContent = `от ${total.toLocaleString('ru-RU')} ₽`;
-  daysEl.textContent = `≈ ${days} ${pluralDays(days)}`;
-}
-      // Навигация по шагам
+      /* Шаги */
       function goToStep(step){
-        steps.forEach(s => s.classList.remove('is-active'));
-        const target = $(`[data-step="${step}"]`, modal);
-        if (target) target.classList.add('is-active');
-
         currentStep = step;
-        progressBar.style.width = `${(step / 4) * 100}%`;
-
-        prevBtn.style.display = step > 1 ? 'inline-flex' : 'none';
-        nextBtn.style.display = step < 4 ? 'inline-flex' : 'none';
+        steps.forEach(s => s.classList.toggle('is-active', Number(s.dataset.step) === step));
+        progressBar.style.width = `${(step / TOTAL) * 100}%`;
+        prevBtn.hidden = step === 1;
+        nextBtn.hidden = step === TOTAL;
+        win.scrollTop = 0;
       }
 
       nextBtn && nextBtn.addEventListener('click', () => {
-        if (currentStep < 4) goToStep(currentStep + 1);
+        if (currentStep < TOTAL) goToStep(currentStep + 1);
       });
       prevBtn && prevBtn.addEventListener('click', () => {
         if (currentStep > 1) goToStep(currentStep - 1);
       });
 
-      // Отправка заявки в Google Apps Script -> Telegram + Таблица
-      form.addEventListener('submit', async (e) => {
+      goToStep(1);
+
+      /* Отправка: Google Apps Script -> Telegram + таблица */
+      form.addEventListener('submit', async e => {
         e.preventDefault();
-        const submitBtn = $('#briefSubmitBtn');
         submitBtn.disabled = true;
         submitBtn.textContent = 'Отправка...';
+        statusEl.classList.remove('is-ok');
+        statusEl.textContent = '';
 
-        const formData = new FormData(form);
+        const fd = new FormData(form);
         const data = {
-          name: formData.get('client_name'),
-          contact: formData.get('client_contact'),
-          type: formData.get('project_type'),
-          features: formData.getAll('features').join(', ') || 'Нет',
-          deadline: formData.get('deadline'),
+          name:       String(fd.get('client_name') || '').trim(),
+          contact:    String(fd.get('client_contact') || '').trim(),
+          type:       fd.get('project_type'),
+          features:   fd.getAll('features').join(', ') || 'Нет',
+          deadline:   fd.get('deadline'),
           calc_price: priceEl.textContent,
-          calc_days: daysEl.textContent,
-          website: formData.get('website') || ''
+          calc_days:  daysEl.textContent
         };
 
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFnd-YIwu_rvu5TkoYOXdpntKhGK81cL4VIeS861eS873SIz5qMwlaN5Bo75MDEVCXBg/exec';
-
         try {
+          // no-cors: ответ сервера прочитать нельзя, ошибка будет только при сбое сети
           await fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
-            headers: {
-              'Content-Type': 'text/plain;charset=utf-8'
-            },
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(data)
           });
 
-          statusEl.style.color = '#387346';
-          statusEl.textContent = 'Заявка отправлена! Глеб свяжется с вами сегодня.';
+          statusEl.classList.add('is-ok');
+          statusEl.textContent = 'Заявка отправлена. Глеб свяжется с вами сегодня.';
 
           setTimeout(() => {
             closeModal();
@@ -575,20 +594,18 @@ function updateCalculation(){
             updateCalculation();
             goToStep(1);
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Отправить заявку Глебу';
+            submitBtn.textContent = SUBMIT_LABEL;
+            statusEl.classList.remove('is-ok');
             statusEl.textContent = '';
           }, 3000);
         } catch (err) {
           console.warn('Ошибка отправки заявки:', err);
-          statusEl.style.color = 'var(--wine)';
           statusEl.textContent = 'Не удалось отправить. Напишите напрямую: @xaliva_5';
           submitBtn.disabled = false;
-          submitBtn.textContent = 'Отправить заявку Глебу';
+          submitBtn.textContent = SUBMIT_LABEL;
         }
       });
     }
-
-  }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setTimeout(start, 1);
