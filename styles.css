@@ -1489,3 +1489,8 @@ p{text-wrap:pretty}
   gap: 12px;
   margin-top: 12px;
 }
+/* Окно брифа не выше экрана, содержимое прокручивается */
+#briefModal .brief-step.is-active{
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+}
