@@ -475,28 +475,46 @@
       backdrop && backdrop.addEventListener('click', closeModal);
 
       // Расчет цены
-      function updateCalculation(){
-        let total = 0;
-        let days = 0;
+     // Расчёт цены: показываем «от X ₽», ограничиваем максимум,
+// дни считаем с учётом параллельной работы над модулями
+const PRICE_CAP = 60000;     // выше этой суммы предлагаем индивидуальный расчёт
+const PARALLEL_FACTOR = 0.5; // доп. модули добавляют примерно половину своего срока
 
-        const checkedType = $('input[name="project_type"]:checked', form);
-        if (checkedType) {
-          total += parseInt(checkedType.dataset.price || '0', 10);
-          days += parseInt(checkedType.dataset.days || '0', 10);
-        }
+// Склонение: 1 день, 2 дня, 5 дней
+function pluralDays(n){
+  const mod10 = n % 10, mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'день';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'дня';
+  return 'дней';
+}
 
-        $$('input[name="features"]:checked', form).forEach(item => {
-          total += parseInt(item.dataset.price || '0', 10);
-          days += parseInt(item.dataset.days || '0', 10);
-        });
+function updateCalculation(){
+  const checkedType = $('input[name="project_type"]:checked', form);
 
-        priceEl.textContent = `${total.toLocaleString('ru-RU')} ₽`;
-        daysEl.textContent = `~${days} дней`;
-      }
+  // Тип не выбран: не показываем 0 ₽
+  if (!checkedType) {
+    priceEl.textContent = 'Выберите тип сайта';
+    daysEl.textContent = '';
+    return;
+  }
 
-      form.addEventListener('change', updateCalculation);
-      updateCalculation();
+  let total = parseInt(checkedType.dataset.price || '0', 10);
+  let days = parseInt(checkedType.dataset.days || '0', 10);
 
+  $$('input[name="features"]:checked', form).forEach(item => {
+    total += parseInt(item.dataset.price || '0', 10);
+    days += Math.ceil(parseInt(item.dataset.days || '0', 10) * PARALLEL_FACTOR);
+  });
+
+  if (total > PRICE_CAP) {
+    priceEl.textContent = 'Индивидуальный расчёт';
+    daysEl.textContent = 'Обсудим объём на коротком брифе';
+    return;
+  }
+
+  priceEl.textContent = `от ${total.toLocaleString('ru-RU')} ₽`;
+  daysEl.textContent = `≈ ${days} ${pluralDays(days)}`;
+}
       // Навигация по шагам
       function goToStep(step){
         steps.forEach(s => s.classList.remove('is-active'));
