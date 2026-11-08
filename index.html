@@ -437,26 +437,27 @@
       <!-- ШАГ 1: ТИП ПРОЕКТА -->
       <div class="brief-step is-active" data-step="1">
         <span class="kicker">Шаг 01 / 04</span>
+        <p class="brief-desc">Выберите базовый формат. Заявки в Telegram, MAX или таблицу входят в любой вариант.</p>
         <h3 class="brief-title">Какой проект <span class="accent">планируете?</span></h3>
         <p class="brief-desc">Выберите базовый формат — от этого зависит архитектура и стек.</p>
         
         <div class="brief-options">
           <label class="brief-option">
-            <input type="radio" name="project_type" value="Лендинг" data-price="30000" data-days="7-10" checked>
+            <input type="radio" name="project_type" value="Лендинг" data-price="12000" data-days="3" checked>
             <div class="brief-option__card">
               <span class="brief-option__title">Одностраничный промо-сайт / Лендинг</span>
               <span class="brief-option__sub">Идеально для запуска услуги, эксперта или продукта</span>
             </div>
           </label>
           <label class="brief-option">
-            <input type="radio" name="project_type" value="Многостраничный сайт" data-price="55000" data-days="10-14">
+            <input type="radio" name="project_type" value="Многостраничный сайт" data-price="25000" data-days="10">
             <div class="brief-option__card">
               <span class="brief-option__title">Корпоративный сайт / Портфолио</span>
               <span class="brief-option__sub">Несколько разделов, блог, глубокая презентация компании</span>
             </div>
           </label>
           <label class="brief-option">
-            <input type="radio" name="project_type" value="Сервис / Интерактив" data-price="95000" data-days="14-20">
+            <input type="radio" name="project_type" value="Сервис / Интерактив" data-price="45000" data-days="14">
             <div class="brief-option__card">
               <span class="brief-option__title">Нестандартный проект / 3D-интерактив</span>
               <span class="brief-option__sub">WebGL, Three.js анимации, сложные калькуляторы и логика</span>
@@ -471,53 +472,68 @@
         <h3 class="brief-title">Что потребуется <span class="accent">внедрить?</span></h3>
         <p class="brief-desc">Можно выбрать несколько пунктов.</p>
 
-        <div class="brief-options">
-          <label class="brief-option">
-            <input type="checkbox" name="features" value="Уведомления на почту и CRM" data-price="6000" data-days="2">
-            <div class="brief-option__card">
-              <span class="brief-option__title">Заявки в Telegram / Email / Таблицы</span>
-              <span class="brief-option__sub">Мгновенные оповещения прямо на телефон</span>
-            </div>
-          </label>
-          <label class="brief-option">
-            <input type="checkbox" name="features" value="3D и креативные анимации" data-price="15000" data-days="3">
-            <div class="brief-option__card">
-              <span class="brief-option__title">Сложные анимации и 3D-элементы</span>
-              <span class="brief-option__sub">Плавный скролл, интерактивные сцены на GSAP/Three.js</span>
-            </div>
-          </label>
-          <label class="brief-option">
-            <input type="checkbox" name="features" value="Тексты и упаковка смыслов" data-price="10000" data-days="3">
-            <div class="brief-option__card">
-              <span class="brief-option__title">Написание текстов и сценария продаж</span>
-              <span class="brief-option__sub">Сформулирую УТП и сильные заголовки без шаблонной воды</span>
-            </div>
-          </label>
-        </div>
-      </div>
-
-      <!-- ШАГ 3: ДЕДЛАЙН И БЮДЖЕТ -->
-      <div class="brief-step" data-step="3">
-        <span class="kicker">Шаг 03 / 04</span>
-        <h3 class="brief-title">Когда планируете <span class="accent">запуск?</span></h3>
+       <div class="brief-options">
+  <label class="brief-option">
+    <input type="checkbox" name="features" value="Шторка до/после и галерея" data-price="3000" data-days="1">
+    <div class="brief-option__card">
+      <span class="brief-option__title">Шторка «до/после» и галерея работ</span>
+      <span class="brief-option__sub">Клиент двигает ползунок и видит результат</span>
+    </div>
+  </label>
+  <label class="brief-option">
+    <input type="checkbox" name="features" value="Калькулятор стоимости" data-price="5000" data-days="2">
+    <div class="brief-option__card">
+      <span class="brief-option__title">Калькулятор стоимости для ваших клиентов</span>
+      <span class="brief-option__sub">Клиент сам считает цену услуги за пару кликов</span>
+    </div>
+  </label>
+  <label class="brief-option">
+    <input type="checkbox" name="features" value="Онлайн-запись" data-price="4000" data-days="2">
+    <div class="brief-option__card">
+      <span class="brief-option__title">Онлайн-запись</span>
+      <span class="brief-option__sub">Подключение YCLIENTS, DIKIDI или своя форма записи</span>
+    </div>
+  </label>
+  <label class="brief-option">
+    <input type="checkbox" name="features" value="3D и сложные анимации" data-price="8000" data-days="3">
+    <div class="brief-option__card">
+      <span class="brief-option__title">Сложные анимации и 3D-элементы</span>
+      <span class="brief-option__sub">Плавный скролл, интерактивные сцены на GSAP/Three.js</span>
+    </div>
+  </label>
+  <label class="brief-option">
+    <input type="checkbox" name="features" value="Тексты и упаковка смыслов" data-price="5000" data-days="2">
+    <div class="brief-option__card">
+      <span class="brief-option__title">Тексты и структура продаж</span>
+      <span class="brief-option__sub">Сформулирую УТП и заголовки без шаблонной воды</span>
+    </div>
+  </label>
+</div>
         
-        <div class="brief-options">
-          <label class="brief-option">
-            <input type="radio" name="deadline" value="Срочно (до 2 недель)" checked>
-            <div class="brief-option__card">
-              <span class="brief-option__title">Срочно (до 2 недель)</span>
-              <span class="brief-option__sub">Приоритетная разработка в сжатые сроки</span>
-            </div>
-          </label>
-          <label class="brief-option">
-            <input type="radio" name="deadline" value="В спокойном темпе (3-4 недели)">
-            <div class="brief-option__card">
-              <span class="brief-option__title">В стандартном темпе (3–4 недели)</span>
-              <span class="brief-option__sub">Спокойное проектирование и шлифовка всех деталей</span>
-            </div>
-          </label>
-        </div>
+
+     <!-- ШАГ 3: СРОКИ -->
+<div class="brief-step" data-step="3">
+  <span class="kicker">Шаг 03 / 04</span>
+  <h3 class="brief-title">Когда планируете <span class="accent">запуск?</span></h3>
+  <p class="brief-desc">Это помогает спланировать график. На стоимость не влияет.</p>
+
+  <div class="brief-options">
+    <label class="brief-option">
+      <input type="radio" name="deadline" value="Как можно скорее" checked>
+      <div class="brief-option__card">
+        <span class="brief-option__title">Как можно скорее</span>
+        <span class="brief-option__sub">Начну в ближайшие дни</span>
       </div>
+    </label>
+    <label class="brief-option">
+      <input type="radio" name="deadline" value="Не горит">
+      <div class="brief-option__card">
+        <span class="brief-option__title">Не горит</span>
+        <span class="brief-option__sub">Спокойно проработаем детали</span>
+      </div>
+    </label>
+  </div>
+</div>
 
       <!-- ШАГ 4: КОНТАКТЫ И РАСЧЁТ -->
       <div class="brief-step" data-step="4">
@@ -535,6 +551,7 @@
             <span class="brief-summary__val" id="calcDays">0 дней</span>
           </div>
         </div>
+        <p class="brief-desc" style="font-size: 13px; opacity: .7;">Это ориентир. Точную сумму назову после короткого брифа, до начала работы.</p>
 
         <p class="brief-desc" style="margin-bottom: 20px;">Куда прислать концепцию и детальное коммерческое предложение?</p>
 
